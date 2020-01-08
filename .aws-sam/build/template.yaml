@@ -1,0 +1,89 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: My API Gateway and Lambda function
+Parameters:
+  apiGatewayStageName:
+    Type: String
+    AllowedPattern: ^[a-z0-9]+$
+    Default: dev
+  lambdaFunctionName:
+    Type: String
+    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
+    Default: my-function
+Resources:
+  apiGateway:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: cf-DBTableScheduling
+      Description: DBTableScheduling-apigateway by CF
+  dbconn:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: apiGateway
+      ParentId:
+        Fn::GetAtt:
+        - apiGateway
+        - RootResourceId
+      PathPart: dbconn
+  apiGatewayRootMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS
+        Credentials: arn:aws:iam::400410987437:role/ApiGatewayInvokeLambdaRole
+        Uri:
+          Fn::Sub:
+          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: arn:aws:lambda:us-east-2:400410987437:function:MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction-3T9IRC5E7DMW
+        IntegrationResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Content-Type: '''application/json'''
+      ResourceId:
+        Ref: dbconn
+      RestApiId:
+        Ref: apiGateway
+      MethodResponses:
+      - StatusCode: 200
+        ResponseParameters:
+          method.response.header.Content-Type: true
+  apiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+    - apiGatewayRootMethod
+    Properties:
+      RestApiId:
+        Ref: apiGateway
+      StageName:
+        Ref: apiGatewayStageName
+  DBConnMgmtFunctionTesting:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DBConnMgmtFunctionTesting
+      Handler: com.xoriant.meghflow.dbconnmgmt.lambda.DBConnMgmtLambda::handleRequest
+      Runtime: java8
+      FunctionName:
+        Ref: lambdaFunctionName
+      MemorySize: 1024
+      Policies: AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          REGION: us-east-2
+          DYNAMODB_NAME: DBConnectionInfo
+  lambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Join:
+        - ''
+        - - /aws/lambda/
+          - Ref: lambdaFunctionName
+      RetentionInDays: 90
+Outputs:
+  apiGatewayInvokeURL:
+    Value:
+      Fn::Sub: https://${apiGateway}.execute-api.${AWS::Region}.amazonaws.com/${apiGatewayStageName}

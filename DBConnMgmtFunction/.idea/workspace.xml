@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BuildServerSettings">
+    <option name="LOGIN" value="" />
+    <option name="SERVER_URL" value="http://buildserver" />
+    <option name="REMEMBER_ME" value="true" />
+    <option name="USE_IDEA_PROXY_SETTINGS" value="true" />
+    <option name="INSPECTIONS_BUILD_TYPE_IDS" />
+    <option name="DUPLICATES_BUILD_TYPE_IDS" />
+    <option name="COVERAGE_SETTINGS" />
+    <option name="TEST_STATUS_ENABLED" value="true" />
+    <option name="TEST_STATUS_SHOW_SUCCESSFUL" value="false" />
+    <option name="POSTPONE_SUITABLE_CONFIGURATIONS_SEARCH" value="false" />
+    <option name="ARTIFACTS_BUILD_TYPE_IDS" />
+    <option name="PERFORM_COMMIT_IF_SUCCESSFUL" value="true" />
+    <option name="PERFORM_COMMIT_IF_NO_NEW_FAILED_TESTS" value="false" />
+    <option name="REQUEST_CONFIRMATON" value="false" />
+    <option name="PRE_TESTED_COMMIT" value="true" />
+    <option name="FILTER_BY_STATUS" value="false" />
+    <option name="FILTER_MARKED_AS_FIXED" value="false" />
+    <option name="SHOW_CLOSE_PROMPT" value="true" />
+    <option name="TOOL_WINDOW_SELECTED_CONTENT_INDEX" value="0" />
+    <option name="FILTER_BY_CURRENT_PROJECT" value="true" />
+    <option name="showStatusBarWidget" value="true" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="38432804-ccd8-4909-bfa0-458625d2d6c6" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1V8zDpXcL109PkhOHpfxv5LdNgs" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="extract.method.default.visibility" value="private" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.xoriant.meghflow.dbconnmgmt.pojo" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Sagar\Office\Client-Calls-Meetings\DataIngestionIdea\POC-Codebase\MeghFlow-DBConfigManagement\DBConnMgmtFunction\src\main\java\com\xoriant\meghflow\dbconnmgmt\repository" />
+      <recent name="D:\Sagar\Office\Client-Calls-Meetings\DataIngestionIdea\POC-Codebase\MeghFlow-DBConfigManagement\DBConnMgmtFunction\src\main\java\com\xoriant\meghflow\dbconnmgmt\util" />
+      <recent name="D:\Sagar\Office\Client-Calls-Meetings\DataIngestionIdea\POC-Codebase\MeghFlow-DBConfigManagement\HelloWorldFunction\src\main\java\com\xoriant\meghflow\dbconnmgmt" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="AWS Lambda.[Remote] MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction-3T9IRC5E7DMW">
+    <configuration name="[Local] DBConnMgmtLambda" type="aws.lambda" factoryName="Local" temporary="true" nameIsGenerated="true">
+      <option name="credentialProviderId" value="profile:default" />
+      <option name="regionId" value="us-east-2" />
+      <option name="environmentVariables">
+        <map />
+      </option>
+      <option name="handler" value="com.xoriant.meghflow.dbconnmgmt.lambda.DBConnMgmtLambda" />
+      <option name="logicalFunctionName" />
+      <option name="memorySize" value="128" />
+      <option name="runtime" value="java8" />
+      <option name="templateFile" />
+      <option name="timeout" value="300" />
+      <option name="useTemplate" value="false" />
+      <option name="input" value="{&#10;  &quot;key1&quot;: &quot;value1&quot;,&#10;  &quot;key2&quot;: &quot;value2&quot;,&#10;  &quot;key3&quot;: &quot;value3&quot;&#10;}" />
+      <option name="inputIsFile" value="false" />
+      <sam>
+        <option name="additionalBuildArgs" value="" />
+        <option name="additionalLocalArgs" value="" />
+        <option name="buildInContainer" value="false" />
+        <option name="dockerNetwork" value="" />
+        <option name="skipImagePull" value="false" />
+      </sam>
+      <method v="2" />
+    </configuration>
+    <configuration name="[Remote] MeghFlow-DBConnMgmt-DBConnMgmtFunction-6KZJ1DKVXPQL" type="aws.lambda" factoryName="Remote" temporary="true" nameIsGenerated="true">
+      <option name="credentialProviderId" value="profile:default" />
+      <option name="regionId" value="us-east-2" />
+      <option name="functionName" value="MeghFlow-DBConnMgmt-DBConnMgmtFunction-6KZJ1DKVXPQL" />
+      <option name="input" value="{&#10;  &quot;operation&quot;: &quot;CREATE&quot;,&#10;  &quot;connectionName&quot;: &quot;TestConnection1&quot;,&#10;  &quot;serverName&quot;: &quot;localhost&quot;,&#10;  &quot;userName&quot;: &quot;admin&quot;,&#10;  &quot;password&quot;: &quot;passwd&quot;,&#10;  &quot;port&quot; : &quot;5341&quot;,&#10;  &quot;dbType&quot; : &quot;SOURCE&quot;,&#10;  &quot;connectionTestSQL&quot; : &quot;SELECT 1 FROM DUAL&quot;&#10;}" />
+      <option name="inputIsFile" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="[Remote] MeghFlow-DBConnMgmt-DBConnMgmtFunction-HY370KGWLQ91" type="aws.lambda" factoryName="Remote" temporary="true" nameIsGenerated="true">
+      <option name="credentialProviderId" value="profile:default" />
+      <option name="regionId" value="us-east-2" />
+      <option name="functionName" value="MeghFlow-DBConnMgmt-DBConnMgmtFunction-HY370KGWLQ91" />
+      <option name="input" value="{&#10;  &quot;key1&quot;: &quot;value1&quot;,&#10;  &quot;key2&quot;: &quot;value2&quot;,&#10;  &quot;key3&quot;: &quot;value3&quot;&#10;}" />
+      <option name="inputIsFile" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="[Remote] MeghFlow-DBConnMgmt-DatabaseConfigManagement-1X8XRRAK2NDJJ" type="aws.lambda" factoryName="Remote" temporary="true" nameIsGenerated="true">
+      <option name="credentialProviderId" value="profile:default" />
+      <option name="regionId" value="us-east-2" />
+      <option name="functionName" value="MeghFlow-DBConnMgmt-DatabaseConfigManagement-1X8XRRAK2NDJJ" />
+      <option name="input" value="{&#10;  &quot;key1&quot;: &quot;value1&quot;,&#10;  &quot;key2&quot;: &quot;value2&quot;,&#10;  &quot;key3&quot;: &quot;value3&quot;&#10;}" />
+      <option name="inputIsFile" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="[Remote] MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction-3T9IRC5E7DMW" type="aws.lambda" factoryName="Remote" temporary="true" nameIsGenerated="true">
+      <option name="credentialProviderId" value="profile:default" />
+      <option name="regionId" value="us-east-2" />
+      <option name="functionName" value="MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction-3T9IRC5E7DMW" />
+      <option name="input" value="{&#10;  &quot;operation&quot; : &quot;DELETE&quot;,&#10;  &quot;dbConnections&quot; : [{&#10;    &quot;ConnectionId&quot; : &quot;934a28c1-3568-4add-ab96-73d183ef3621&quot;&#10;  }]&#10;}" />
+      <option name="inputIsFile" value="false" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="AWS Lambda.[Local] DBConnMgmtLambda" />
+      <item itemvalue="AWS Lambda.[Remote] MeghFlow-DBConnMgmt-DatabaseConfigManagement-1X8XRRAK2NDJJ" />
+      <item itemvalue="AWS Lambda.[Remote] MeghFlow-DBConnMgmt-DBConnMgmtFunction-6KZJ1DKVXPQL" />
+      <item itemvalue="AWS Lambda.[Remote] MeghFlow-DBConnMgmt-DBConnMgmtFunction-HY370KGWLQ91" />
+      <item itemvalue="AWS Lambda.[Remote] MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction-3T9IRC5E7DMW" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="AWS Lambda.[Remote] MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction-3T9IRC5E7DMW" />
+        <item itemvalue="AWS Lambda.[Remote] MeghFlow-DBConnMgmt-DBConnMgmtFunction-6KZJ1DKVXPQL" />
+        <item itemvalue="AWS Lambda.[Remote] MeghFlow-DBConnMgmt-DBConnMgmtFunction-HY370KGWLQ91" />
+        <item itemvalue="AWS Lambda.[Remote] MeghFlow-DBConnMgmt-DatabaseConfigManagement-1X8XRRAK2NDJJ" />
+        <item itemvalue="AWS Lambda.[Local] DBConnMgmtLambda" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="38432804-ccd8-4909-bfa0-458625d2d6c6" name="Default Changelist" comment="" />
+      <created>1576649392546</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1576649392546</updated>
+      <workItem from="1576649394944" duration="970000" />
+      <workItem from="1576651284402" duration="13502000" />
+      <workItem from="1576728015464" duration="1208000" />
+      <workItem from="1576736783834" duration="28342000" />
+      <workItem from="1576850296987" duration="7760000" />
+      <workItem from="1577091395537" duration="34945000" />
+      <workItem from="1577339012026" duration="2118000" />
+      <workItem from="1577347943474" duration="705000" />
+      <workItem from="1577349082311" duration="4446000" />
+      <workItem from="1577436898975" duration="8186000" />
+      <workItem from="1577501855657" duration="268000" />
+      <workItem from="1577804089351" duration="3293000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>

@@ -1,0 +1,157 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: 'AWS::Serverless-2016-10-31'
+Description: "My API Gateway and Lambda function"
+
+Parameters:
+  apiGatewayStageName:
+    Type: "String"
+    AllowedPattern: "^[a-z0-9]+$"
+    Default: "dev"
+  
+  lambdaFunctionName:
+    Type: "String"
+    AllowedPattern: "^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$"
+    Default: "my-function"
+  # lambdaCodeUri:
+  #   Type: "String"
+  #   AllowedPattern: "^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$"
+  #   Default: "CustomLambdaFunction"
+
+  # Region:
+  #   Type: "String"
+
+  # DYNAMODBNAME:
+  #   Type: "String"
+
+Resources:
+  apiGateway:
+    Type: "AWS::ApiGateway::RestApi"
+    Properties:
+      Name: "cf-DBTableScheduling"
+      Description: "DBTableScheduling-apigateway by CF"
+
+  dbconn:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      RestApiId: !Ref apiGateway
+      ParentId: !GetAtt 
+        - apiGateway
+        - RootResourceId
+      PathPart: dbconn
+      # endpointConfigurationTypes: REGIONAL
+
+
+  apiGatewayRootMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      AuthorizationType: "NONE"
+      HttpMethod: "POST"
+      Integration:
+        IntegrationHttpMethod: "POST"
+        Type: AWS
+        Credentials: "arn:aws:iam::400410987437:role/ApiGatewayInvokeLambdaRole"
+        Uri: !Sub
+          - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations"
+          -  lambdaArn: "arn:aws:lambda:us-east-2:400410987437:function:MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction-3T9IRC5E7DMW"
+          # -  lambdaArn:  "arn:aws:lambda:us-east-2:400410987437:function:MeghFlow-DBConnMappingInfoMg-DBConnMappingFunction-1JPFWCOPRFVED" 
+          # -  lambdaArn:  "arn:aws:lambda:us-east-2:400410987437:function:MeghFlow-DBTableColumnVal-DBTableColumnValidateMap-N4ZK42PEO7EO" 
+          #- lambdaArn: "arn:aws:lambda:us-east-2:400410987437:function:MeghFlow-DBTableSchedulin-DBTableSchedulingETLMapp-DKZVIQXAASIK"
+          # - lambdaArn:  !GetAtt "DBConnMgmtFunctionTesting.Arn"
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        # ResponseTemplates:
+        #   text/html: "$input.path('$')"
+      ResourceId: !Ref "dbconn" 
+      RestApiId: !Ref "apiGateway"
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Content-Type: true
+
+  apiGatewayDeployment:
+    Type: "AWS::ApiGateway::Deployment"
+    DependsOn:
+      - "apiGatewayRootMethod"
+    Properties:
+      RestApiId: !Ref "apiGateway"
+      StageName: !Ref "apiGatewayStageName"
+
+  DBConnMgmtFunctionTesting:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DBConnMgmtFunction
+      # Code: 
+      #   Bucket: rashmi478-sam-demo
+      #   Key: 4287f980dcb517247d0c10a31877c541
+      Handler: com.xoriant.meghflow.dbconnmgmt.lambda.DBConnMgmtLambda::handleRequest
+      Runtime: java8
+      FunctionName: !Ref "lambdaFunctionName"
+      MemorySize: 1024
+      Policies: AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          REGION: us-east-2
+          DYNAMODB_NAME: DBConnectionInfo
+         
+
+  
+  # lambdaApiGatewayInvoke:
+  #   Type: "AWS::Lambda::Permission"
+  #   Properties:
+  #     Action: "lambda:InvokeFunction"
+  #     FunctionName: !Sub "arn:aws:lambda:us-east-2:400410987437:function:MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction-3T9IRC5E7DMW"
+  #     Principal: apigateway.amazonaws.com
+  #     # SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${apiGateway}/*/POST"
+  #     SourceARn: !Join [
+  #       "", [
+  #         "arn:aws:execute-api:", 
+  #         {"Ref": "AWS::Region"}, ":", 
+  #         {"Ref": "AWS::AccountId"}, ":", 
+  #         !Ref "apiGateway", "/*/*/*"
+  #       ]
+  #     ]
+
+
+  # lambdaIAMRole:
+  #   Type: "AWS::IAM::Role"
+  #   Properties:
+  #     AssumeRolePolicyDocument:
+  #       Version: "2012-10-17"
+  #       Statement:
+  #         - Action:
+  #             - "sts:AssumeRole"
+  #           Effect: "Allow"
+  #           Principal:
+  #             Service:
+  #               - "lambda.amazonaws.com"
+  #     Policies:
+  #       - PolicyDocument:
+  #           Version: "2012-10-17"
+  #           Statement:
+  #             - Action:
+  #                 - "logs:CreateLogGroup"
+  #                 - "logs:CreateLogStream"
+  #                 - "logs:PutLogEvents"
+  #               Effect: "Allow"
+  #               Resource:
+  #                 - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${lambdaFunctionName}:*"
+  #         PolicyName: "lambda"
+
+  lambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      # LogGroupName: !Sub "/aws/lambda/${DBConnMgmtFunctionTesting}"
+      LogGroupName: !Join 
+        - ''
+        - - /aws/lambda/
+          - !Ref lambdaFunctionName
+      RetentionInDays: 90
+
+Outputs:
+  apiGatewayInvokeURL:
+    Value: !Sub "https://${apiGateway}.execute-api.${AWS::Region}.amazonaws.com/${apiGatewayStageName}"
+
+  lambdaArn:
+    Value: !GetAtt lambdaFunctionName.Arn

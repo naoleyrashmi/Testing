@@ -1,0 +1,61 @@
+# API Gateway for Web Page Lambda
+PageGateway:
+  Type: AWS::ApiGateway::RestApi
+  Properties:
+    Name: Service Checker Gateway
+PageResource:
+  Type: AWS::ApiGateway::Resource
+  Properties:
+    RestApiId: !Ref PageGateway
+    ParentId:
+      Fn::GetAtt:
+      - PageGateway
+      - RootResourceId
+    PathPart: page
+PageGatewayMethod:
+  Type: AWS::ApiGateway::Method
+  Properties:
+    AuthorizationType: NONE
+    HttpMethod: GET
+    Integration:
+      Type: AWS
+      IntegrationHttpMethod: POST
+      Uri:
+        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WebRenderLambda.Arn}/invocations
+      RequestTemplates:
+        application/json: |
+          {
+              "method": "$context.httpMethod",
+              "body" : $input.json('$'),
+              "headers": {
+                  #foreach($param in $input.params().header.keySet())
+                  "$param": "$util.escapeJavaScript($input.params().header.get($param))"
+                  #if($foreach.hasNext),#end
+                  #end
+              }
+          }
+      IntegrationResponses:
+      - StatusCode: 200
+        ResponseParameters:
+          method.response.header.Content-Type: "'text/html'"
+        ResponseTemplates:
+          text/html: "$input.path('$')"
+    ResourceId: !Ref PageResource
+    RestApiId: !Ref PageGateway
+    MethodResponses:
+    - StatusCode: 200
+      ResponseParameters:
+        method.response.header.Content-Type: true
+PageGatewayProdStage:
+  Type: AWS::ApiGateway::Stage
+  Properties:
+    DeploymentId: !Ref PageGatewayDeployment
+    RestApiId: !Ref PageGateway
+    StageName: Prod
+PageGatewayDeployment:
+  Type: AWS::ApiGateway::Deployment
+  DependsOn: PageGatewayMethod
+  Properties:
+    RestApiId: !Ref PageGateway
+    Description: PageGateway deployment
+    StageName: 
