@@ -2,22 +2,25 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      java: 8
+    commands:
+      - pip3 install aws-sam-cl
+
 
   pre_build:
     commands:
       - echo "[Pre-Build phase]"
 
-  build:
-    commands:
-      - sam build
+#   build:
+#     commands:
+#       - sam build 
+#       - aws cloudformation package --template-file template.yaml --s3-bucket rashmi478-sam-demo --output-template-file packaged.yaml
 
-  post_build:
-    commands:
-      - sam package --output-template-file packaged.yaml --s3-bucket rashmi478-sam-demo
 
-artifacts:
-  type: zip
-  files:
-    - packaged.yaml
+#   post_build:
+#     commands:
+#       # - sam package --output-template-file packaged.yaml --s3-bucket rashmi478-sam-demo
+
+# artifacts:
+#   type: zip
+#   files:
+#     - packaged.yaml
