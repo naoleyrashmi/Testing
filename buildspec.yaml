@@ -6,7 +6,7 @@ phases:
     # - |
     #     pip install -U pip
     #     pip install -U awscli
-    - pip3 install aws-sam-cli
+    # - pip3 install aws-sam-cli
 
 
   pre_build:
@@ -15,14 +15,15 @@ phases:
 
   build:
     commands:
-      - sam build 
-      # - aws cloudformation package --template-file template.yaml --s3-bucket rashmi-ohio-sam-demo --output-template-file packaged.yaml
-      - sam deploy --stack-name codebuildtesting --change-set-type=CREATE
+      # - sam build 
+      - aws cloudformation package --template-file template.yaml --s3-bucket rashmi-ohio-sam-demo --output-template-file packaged.yaml
+      - aws cloudformation deploy --template-file packaged.yaml --capabilities CAPABILITY_IAM  --region us-east-2 --stack-name hdegyrd
+      # - sam deploy --stack-name codebuildtesting --change-set-type=CREATE
 
   post_build:
     commands:
       # - sam package --output-template-file packaged.yaml --s3-bucket rashmi478-sam-demo
-      # aws cloudformation deploy --template-file C:\codebuild\tmp\output\src893283967\src\github.com\naoleyrashmi\Testing\packaged.yaml --st
+      #  aws cloudformation deploy --template-file C:\codebuild\tmp\output\src893283967\src\github.com\naoleyrashmi\Testing\packaged.yaml --st
        - 
 artifacts:
   type: zip
