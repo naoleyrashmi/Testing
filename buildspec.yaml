@@ -18,15 +18,19 @@ phases:
       # - sam build 
       - aws cloudformation package --template-file template.yaml --s3-bucket rashmi-ohio-sam-demo --output-template-file packaged.yaml
       - aws s3 cp ./packaged.yaml s3://rashmi-ohio-sam-demo/packaged.yaml
+      - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
+      - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --stack-name testcvdg
+      # - copy packaged.yaml C:\codebuild\tmp\output
+      # - aws s3 cp ./packaged.yaml C:\codebuild\tmp\output\
+      # - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
+      # - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output\
       # - aws s3 cp ./packaged.yaml .
-
-      # - aws cloudformation deploy --template-file C:\codebuild\tmp\output\src893283967\src\github.com\naoleyrashmi\Testing\packaged.yaml --stack-name hdegyrd
       # - sam deploy --stack-name codebuildtesting --change-set-type=CREATE
 
   post_build:
     commands:
       # - sam package --output-template-file packaged.yaml --s3-bucket rashmi478-sam-demo
-      aws cloudformation deploy --template-file packaged.yaml --stack-name testcvdg
+      # aws cloudformation deploy --template-file s3://rashmi-ohio-sam-demo/packaged.yaml --stack-name testcvdg
        - 
 artifacts:
   type: zip
