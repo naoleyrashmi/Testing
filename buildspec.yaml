@@ -17,7 +17,7 @@ phases:
     commands:
       - sam build 
       # - aws cloudformation package --template-file template.yaml --s3-bucket rashmi-ohio-sam-demo --output-template-file packaged.yaml
-      - sam deploy --stack-name codebuildtesting
+      - sam deploy --stack-name codebuildtesting --change-set-type=CREATE
 
   post_build:
     commands:
