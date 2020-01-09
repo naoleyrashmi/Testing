@@ -17,13 +17,13 @@ phases:
     commands:
       - sam build 
       # - aws cloudformation package --template-file template.yaml --s3-bucket rashmi-ohio-sam-demo --output-template-file packaged.yaml
-      - sam deploy --guided
+      - sam deploy --stack-name codebuildtesting
 
   post_build:
     commands:
       # - sam package --output-template-file packaged.yaml --s3-bucket rashmi478-sam-demo
       # aws cloudformation deploy --template-file C:\codebuild\tmp\output\src893283967\src\github.com\naoleyrashmi\Testing\packaged.yaml --st
-
+       - 
 artifacts:
   type: zip
   files:
