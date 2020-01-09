@@ -3,24 +3,26 @@ version: 0.2
 phases:
   install:
     commands:
-      - pip3 install aws-sam-cl
+    - |
+        pip install -U pip
+        pip install -U awscli
+        pip3 install aws-sam-cli
 
 
   pre_build:
     commands:
       - echo "[Pre-Build phase]"
 
-#   build:
-#     commands:
-#       - sam build 
-#       - aws cloudformation package --template-file template.yaml --s3-bucket rashmi478-sam-demo --output-template-file packaged.yaml
+  build:
+    commands:
+      - aws cloudformation package --template-file template.yaml --s3-bucket rashmi478-sam-demo --output-template-file packaged.yaml
 
 
-#   post_build:
-#     commands:
-#       # - sam package --output-template-file packaged.yaml --s3-bucket rashmi478-sam-demo
+  post_build:
+    commands:
+      # - sam package --output-template-file packaged.yaml --s3-bucket rashmi478-sam-demo
 
-# artifacts:
-#   type: zip
-#   files:
-#     - packaged.yaml
+artifacts:
+  type: zip
+  files:
+    - packaged.yaml
