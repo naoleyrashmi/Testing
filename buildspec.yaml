@@ -19,7 +19,7 @@ phases:
       - aws cloudformation package --template-file template.yaml --s3-bucket rashmi-ohio-sam-demo --output-template-file packaged.yaml
       - aws s3 cp ./packaged.yaml s3://rashmi-ohio-sam-demo/packaged.yaml
       - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
-      - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --stack-name testcvdg
+      - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name testcvdg
       # - copy packaged.yaml C:\codebuild\tmp\output
       # - aws s3 cp ./packaged.yaml C:\codebuild\tmp\output\
       # - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
