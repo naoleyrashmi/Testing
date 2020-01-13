@@ -84,9 +84,9 @@ Resources:
     Properties:
       # CodeUri: DBConnMgmtFunction
       CodeUri: !Ref lambdaCodeUri
-      # Code: 
+      # CodeUri: 
       #   Bucket: rashmi478-sam-demo
-      #   Key: 4287f980dcb517247d0c10a31877c541
+      #   Key: !Sub '${uuid}/main.zip'
       Handler: com.xoriant.meghflow.dbconnmgmt.lambda.DBConnMgmtLambda::handleRequest
       Runtime: java8
       FunctionName: !Ref "lambdaFunctionName"

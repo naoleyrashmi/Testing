@@ -70,8 +70,10 @@ Resources:
   MeghFlowLambda:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri:
-        Ref: lambdaCodeUri
+      Code:
+        Bucket: rashmi478-sam-demo
+        Key:
+          Fn::Sub: ${uuid}/main.zip
       Handler: com.xoriant.meghflow.dbconnmgmt.lambda.DBConnMgmtLambda::handleRequest
       Runtime: java8
       FunctionName:
@@ -82,6 +84,7 @@ Resources:
         Variables:
           REGION: us-east-2
           DYNAMODB_NAME: DBConnectionInfo
+      CodeUri: s3://rashmi-ohio-sam-demo/2568eb462883d7e91e6b85d6045693f3
   lambdaLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:

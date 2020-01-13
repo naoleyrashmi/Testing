@@ -29,7 +29,7 @@ phases:
 
   post_build:
     commands:
-      - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name testcvdg
+      - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack
      
 artifacts:
   type: zip
