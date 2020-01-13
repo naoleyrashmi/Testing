@@ -24,8 +24,8 @@ phases:
     commands:
       # - sam build 
       - aws cloudformation package --template-file template.yaml --s3-bucket rashmi-ohio-sam-demo --output-template-file packaged.yaml
-      # - aws s3 cp ./packaged.yaml s3://rashmi-ohio-sam-demo/packaged.yaml
-      # - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
+      - aws s3 cp ./packaged.yaml s3://rashmi-ohio-sam-demo/packaged.yaml
+      - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
       
       # - copy packaged.yaml C:\codebuild\tmp\output
       # - aws s3 cp ./packaged.yaml C:\codebuild\tmp\output\
@@ -36,8 +36,7 @@ phases:
 
   post_build:
     commands:
-      - aws cloudformation deploy --template-file $CODEBUILD_SRC_DIR --capabilities CAPABILITY_IAM --stack-name codebuildstack
-     
+      - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack --parameter-overrides apiGatewayStageName=qa lambdaFunctionName=MeghFlow-function12
 artifacts:
   type: zip
   files:
