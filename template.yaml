@@ -13,10 +13,10 @@ Parameters:
     AllowedPattern: "^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$"
     Default: "MeghFlow-function"
 
-  lambdaCodeUri:
-    Type: "String"
-    AllowedPattern: "^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$"
-    Default: "DBConnMgmtFunction"
+  # lambdaCodeUri:
+  #   Type: "String"
+  #   AllowedPattern: "^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$"
+  #   Default: "DBConnMgmtFunction"
 
   # Region:
   #   Type: "String"
@@ -82,8 +82,8 @@ Resources:
   MeghFlowLambda:
     Type: AWS::Serverless::Function
     Properties:
-      # CodeUri: DBConnMgmtFunction
-      CodeUri: !Ref lambdaCodeUri
+      CodeUri: DBConnMgmtFunction
+      # CodeUri: !Ref lambdaCodeUri
       # CodeUri: 
       #   Bucket: rashmi478-sam-demo
       #   Key: !Sub '${uuid}/main.zip'
