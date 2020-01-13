@@ -12,17 +12,20 @@ phases:
   pre_build:
     commands:
       - echo "[Pre-Build phase]"
-        List params = [
-                string(name: 'APIGATEWAYNAME', description: 'Please Enter the stage name.'),
-                string(name: 'LAMBDAFUNCTIONNAME', description: 'Please Enter the Lambda Function Name]
-        chmod u+x paramsValidate.sh "APIGATEWAYNAME , LAMBDAFUNCTIONNAME"
+#       - export APIGATEWAYNAME=${apiGatewayStageName}
+#         export LAMBDAFUNCTIONNAME=${lambdaFunctionName}
+#         python generate_CF_params.py "APIGATEWAYNAME, LAMBDAFUNCTIONNAME"
+#         chmod 777 params.yaml
+#         cat params.yaml
+# CODEBUILD_SRC_DIR=C:\codebuild\tmp\output\src870899099\src\github.com\naoleyrashmi\Testing
+#                   C:\codebuild\tmp\output\src276879719\src\packaged.yaml
          
   build:
     commands:
       # - sam build 
       - aws cloudformation package --template-file template.yaml --s3-bucket rashmi-ohio-sam-demo --output-template-file packaged.yaml
-      - aws s3 cp ./packaged.yaml s3://rashmi-ohio-sam-demo/packaged.yaml
-      - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
+      # - aws s3 cp ./packaged.yaml s3://rashmi-ohio-sam-demo/packaged.yaml
+      # - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
       
       # - copy packaged.yaml C:\codebuild\tmp\output
       # - aws s3 cp ./packaged.yaml C:\codebuild\tmp\output\
@@ -33,7 +36,7 @@ phases:
 
   post_build:
     commands:
-      - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack
+      - aws cloudformation deploy --template-file $CODEBUILD_SRC_DIR --capabilities CAPABILITY_IAM --stack-name codebuildstack
      
 artifacts:
   type: zip
