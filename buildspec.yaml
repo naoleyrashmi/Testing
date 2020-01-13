@@ -12,7 +12,11 @@ phases:
   pre_build:
     commands:
       - echo "[Pre-Build phase]"
-
+        List params = [
+                string(name: 'APIGATEWAYNAME', description: 'Please Enter the stage name.'),
+                string(name: 'LAMBDAFUNCTIONNAME', description: 'Please Enter the Lambda Function Name]
+        chmod u+x paramsValidate.sh "APIGATEWAYNAME , LAMBDAFUNCTIONNAME"
+         
   build:
     commands:
       # - sam build 
