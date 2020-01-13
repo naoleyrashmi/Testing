@@ -8,5 +8,5 @@ s3_prefix = "test1282374"
 region = "us-east-2"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
-parameter_overrides = "apiGatewayStageName=dev lambdaFunctionName=my-function"
+parameter_overrides = "apiGatewayStageName=dev lambdaFunctionName=MeghFlow-function lambdaCodeUri=DBConnMgmtFunction"
 

@@ -11,12 +11,11 @@ Parameters:
   lambdaFunctionName:
     Type: "String"
     AllowedPattern: "^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$"
-    Default: "MeghFlow-function"
-
-  lambdaCodeUri:
-    Type: "String"
-    AllowedPattern: "^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$"
-    Default: "DBConnMgmtFunction"
+    Default: "my-function"
+  # lambdaCodeUri:
+  #   Type: "String"
+  #   AllowedPattern: "^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$"
+  #   Default: "CustomLambdaFunction"
 
   # Region:
   #   Type: "String"
@@ -57,7 +56,7 @@ Resources:
           # -  lambdaArn:  "arn:aws:lambda:us-east-2:400410987437:function:MeghFlow-DBConnMappingInfoMg-DBConnMappingFunction-1JPFWCOPRFVED" 
           # -  lambdaArn:  "arn:aws:lambda:us-east-2:400410987437:function:MeghFlow-DBTableColumnVal-DBTableColumnValidateMap-N4ZK42PEO7EO" 
           #- lambdaArn: "arn:aws:lambda:us-east-2:400410987437:function:MeghFlow-DBTableSchedulin-DBTableSchedulingETLMapp-DKZVIQXAASIK"
-          - lambdaArn:  !GetAtt "MeghFlowLambda.Arn"
+          - lambdaArn:  !GetAtt "DBConnMgmtFunctionTesting.Arn"
         IntegrationResponses:
           - StatusCode: 200
             ResponseParameters:
@@ -79,11 +78,10 @@ Resources:
       RestApiId: !Ref "apiGateway"
       StageName: !Ref "apiGatewayStageName"
 
-  MeghFlowLambda:
+  DBConnMgmtFunctionTesting:
     Type: AWS::Serverless::Function
     Properties:
-      # CodeUri: DBConnMgmtFunction
-      CodeUri: !Ref lambdaCodeUri
+      CodeUri: DBConnMgmtFunction
       # Code: 
       #   Bucket: rashmi478-sam-demo
       #   Key: 4287f980dcb517247d0c10a31877c541
@@ -144,7 +142,7 @@ Resources:
   lambdaLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      # LogGroupName: !Sub "/aws/lambda/${MeghFlowLambda}"
+      # LogGroupName: !Sub "/aws/lambda/${DBConnMgmtFunctionTesting}"
       LogGroupName: !Join 
         - ''
         - - /aws/lambda/

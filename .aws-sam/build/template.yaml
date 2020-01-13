@@ -9,7 +9,11 @@ Parameters:
   lambdaFunctionName:
     Type: String
     AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
-    Default: my-function
+    Default: MeghFlow-function
+  lambdaCodeUri:
+    Type: String
+    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
+    Default: DBConnMgmtFunction
 Resources:
   apiGateway:
     Type: AWS::ApiGateway::RestApi
@@ -38,7 +42,10 @@ Resources:
         Uri:
           Fn::Sub:
           - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
-          - lambdaArn: arn:aws:lambda:us-east-2:400410987437:function:MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction-3T9IRC5E7DMW
+          - lambdaArn:
+              Fn::GetAtt:
+              - MeghFlowLambda
+              - Arn
         IntegrationResponses:
         - StatusCode: 200
           ResponseParameters:
@@ -60,10 +67,10 @@ Resources:
         Ref: apiGateway
       StageName:
         Ref: apiGatewayStageName
-  DBConnMgmtFunctionTesting:
+  MeghFlowLambda:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: DBConnMgmtFunctionTesting
+      CodeUri: MeghFlowLambda
       Handler: com.xoriant.meghflow.dbconnmgmt.lambda.DBConnMgmtLambda::handleRequest
       Runtime: java8
       FunctionName:

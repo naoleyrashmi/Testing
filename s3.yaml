@@ -1,0 +1,39 @@
+Description: "Customer Artifacts bucket"
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterLabels:
+      AccountName:
+        default: AccountName 
+      Region:
+        default: Region
+    ParameterGroups:
+      - Label:
+          default: S3 Bucket for Customer
+        Parameters:
+          - AccountName
+          - Region    
+Parameters:
+  AccountName:
+    Description: Please Enter valid Account Name.
+    Type: String
+    Default: citi
+  Region:
+    Description: Enter Region
+    Type: String
+    Default: us-east-2
+
+Resources:
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      # "BucketName" : { "Fn::Join" : [ "-", [{ "Ref" : "AWS::StackName" }, "s3", { "Ref" : "AWS::Region" }]]},
+      BucketName: !Sub ${AccountName}-${Region}-artifacts-meghflow
+      AccessControl: PublicReadWrite
+      VersioningConfiguration:
+        Status: Suspended
+      # BucketEncryption:
+      #   ServerSideEncryptionConfiguration:
+      #     - ServerSideEncryptionByDefault:
+      #         KMSMasterKeyID: !Ref KMSArn
+      #         SSEAlgorithm: "aws:kms"
