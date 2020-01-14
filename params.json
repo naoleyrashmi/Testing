@@ -1,0 +1,25 @@
+// [
+//         {
+//             "ParameterKey": "lambdaFunctionName",
+//             "ParameterValue": "customfun1343"
+//         },
+//         {
+//             "ParameterKey": "apiGatewayStageName",
+//             "ParameterValue": "teststage"
+//         }
+// ]
+
+
+{
+    "Parameters": [
+      {
+        "ParameterKey": "lambdaFunctionName",
+        "ParameterValue": "customfun1343"
+      },
+
+      {
+        "ParameterKey": "apiGatewayStageName",
+        "ParameterValue": "teststage"
+      }
+    ]
+}

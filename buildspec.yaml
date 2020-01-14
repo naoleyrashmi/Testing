@@ -36,7 +36,9 @@ phases:
 
   post_build:
     commands:
-      - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack --parameter-overrides apiGatewayStageName=qa lambdaFunctionName=MeghFlow-function12
+      # - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack --parameter-overrides apiGatewayStageName=qa lambdaFunctionName=MeghFlow-function12
+      # - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack --parameters https://your-bucket-name.s3.amazonaws.com/params/parameters.json
+      - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack --parameters-overrides $(cat parameters-dev.properties)
 artifacts:
   type: zip
   files:

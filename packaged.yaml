@@ -10,10 +10,6 @@ Parameters:
     Type: String
     AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
     Default: MeghFlow-function
-  lambdaCodeUri:
-    Type: String
-    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
-    Default: DBConnMgmtFunction
 Resources:
   apiGateway:
     Type: AWS::ApiGateway::RestApi
@@ -70,10 +66,7 @@ Resources:
   MeghFlowLambda:
     Type: AWS::Serverless::Function
     Properties:
-      Code:
-        Bucket: rashmi478-sam-demo
-        Key:
-          Fn::Sub: ${uuid}/main.zip
+      CodeUri: s3://rashmi-ohio-sam-demo/ba9c64301e8c6ce56b1cf4c4bc88aaf7
       Handler: com.xoriant.meghflow.dbconnmgmt.lambda.DBConnMgmtLambda::handleRequest
       Runtime: java8
       FunctionName:
@@ -84,7 +77,6 @@ Resources:
         Variables:
           REGION: us-east-2
           DYNAMODB_NAME: DBConnectionInfo
-      CodeUri: s3://rashmi-ohio-sam-demo/2568eb462883d7e91e6b85d6045693f3
   lambdaLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
