@@ -20,11 +20,12 @@ phases:
       - echo %CODEBUILD_SRC_DIR%
       - aws s3 cp ./packaged.yaml s3://rashmi-ohio-sam-demo/packaged.yaml
       - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
-      
-     finally:
-      - echo THE PATH WORK IS !!!
       - echo CODE BUILD SRC DIRECTORY
       - echo %CODEBUILD_SRC_DIR%
+    #  finally:
+    #   - echo THE PATH WORK IS !!!
+    #   - echo CODE BUILD SRC DIRECTORY
+    #   - echo %CODEBUILD_SRC_DIR%
       # - copy packaged.yaml C:\codebuild\tmp\output
       # - aws s3 cp ./packaged.yaml C:\codebuild\tmp\output\
       # - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
