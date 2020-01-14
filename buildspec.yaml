@@ -11,22 +11,20 @@ phases:
 
   pre_build:
     commands:
-      - echo "[Pre-Build phase]"
-#       - export APIGATEWAYNAME=${apiGatewayStageName}
-#         export LAMBDAFUNCTIONNAME=${lambdaFunctionName}
-#         python generate_CF_params.py "APIGATEWAYNAME, LAMBDAFUNCTIONNAME"
-#         chmod 777 params.yaml
-#         cat params.yaml
-# CODEBUILD_SRC_DIR=C:\codebuild\tmp\output\src870899099\src\github.com\naoleyrashmi\Testing
-#                   C:\codebuild\tmp\output\src276879719\src\packaged.yaml
+      - echo "[Pre-Build phase]
          
   build:
     commands:
       # - sam build 
       - aws cloudformation package --template-file template.yaml --s3-bucket rashmi-ohio-sam-demo --output-template-file packaged.yaml
+      - echo %CODEBUILD_SRC_DIR%
       - aws s3 cp ./packaged.yaml s3://rashmi-ohio-sam-demo/packaged.yaml
       - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
       
+     finally:
+      - echo THE PATH WORK IS !!!
+      - echo CODE BUILD SRC DIRECTORY
+      - echo %CODEBUILD_SRC_DIR%
       # - copy packaged.yaml C:\codebuild\tmp\output
       # - aws s3 cp ./packaged.yaml C:\codebuild\tmp\output\
       # - aws s3 cp s3://rashmi-ohio-sam-demo/packaged.yaml C:\codebuild\tmp\output
@@ -36,7 +34,8 @@ phases:
 
   post_build:
     commands:
-      - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack --parameter-overrides apiGatewayStageName=qa lambdaFunctionName=MeghFlow-function12
+      # - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack --parameter-overrides apiGatewayStageName=qa lambdaFunctionName=MeghFlow-function12
+      - aws cloudformation deploy --template-file $CODEBUILD_SRC_DIR\packaged.yaml --capabilities CAPABILITY_IAM --stack-name $accountname$region --parameter-overrides apiGatewayStageName=qa lambdaFunctionName=MeghFlow-function12
       # - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack --parameters https://your-bucket-name.s3.amazonaws.com/params/parameters.json
       # - aws cloudformation deploy --template-file C:\codebuild\tmp\output\packaged.yaml --capabilities CAPABILITY_IAM --stack-name codebuildstack --parameters-overrides $(cat parameters-dev.properties)
 artifacts:
