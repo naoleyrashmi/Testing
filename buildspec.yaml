@@ -11,7 +11,7 @@ phases:
 
   pre_build:
     commands:
-      - echo "[Pre-Build phase]
+      # - echo "[Pre-Build phase]
          
   build:
     commands:
