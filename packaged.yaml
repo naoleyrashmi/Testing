@@ -1,92 +1,27 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: My API Gateway and Lambda function
+Description: ParentStack with all child stack
 Parameters:
-  apiGatewayStageName:
-    Type: String
-    AllowedPattern: ^[a-z0-9]+$
-    Default: dev
-  lambdaFunctionName:
-    Type: String
-    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
-    Default: MeghFlow-function
+  AccountName:
+    Description: Please Enter valid Account Name.
+    Type: CommaDelimitedList
+    Default: citi
+  Region:
+    Description: Enter Region
+    Type: CommaDelimitedList
+    Default: us-east-2
+  S3BucketName:
+    Type: CommaDelimitedList
+    Default: ''
+  S3KeyName:
+    Type: CommaDelimitedList
+    Default: MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction.zip
 Resources:
-  apiGateway:
-    Type: AWS::ApiGateway::RestApi
+  LambdaStack1:
+    Type: AWS::CloudFormation::Stack
     Properties:
-      Name: cf-DBTableScheduling
-      Description: DBTableScheduling-apigateway by CF
-  dbconn:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      RestApiId:
-        Ref: apiGateway
-      ParentId:
-        Fn::GetAtt:
-        - apiGateway
-        - RootResourceId
-      PathPart: dbconn
-  apiGatewayRootMethod:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: POST
-      Integration:
-        IntegrationHttpMethod: POST
-        Type: AWS
-        Credentials: arn:aws:iam::400410987437:role/ApiGatewayInvokeLambdaRole
-        Uri:
-          Fn::Sub:
-          - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
-          - lambdaArn:
-              Fn::GetAtt:
-              - MeghFlowLambda
-              - Arn
-        IntegrationResponses:
-        - StatusCode: 200
-          ResponseParameters:
-            method.response.header.Content-Type: '''application/json'''
-      ResourceId:
-        Ref: dbconn
-      RestApiId:
-        Ref: apiGateway
-      MethodResponses:
-      - StatusCode: 200
-        ResponseParameters:
-          method.response.header.Content-Type: true
-  apiGatewayDeployment:
-    Type: AWS::ApiGateway::Deployment
-    DependsOn:
-    - apiGatewayRootMethod
-    Properties:
-      RestApiId:
-        Ref: apiGateway
-      StageName:
-        Ref: apiGatewayStageName
-  MeghFlowLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: s3://rashmi-ohio-sam-demo/ba9c64301e8c6ce56b1cf4c4bc88aaf7
-      Handler: com.xoriant.meghflow.dbconnmgmt.lambda.DBConnMgmtLambda::handleRequest
-      Runtime: java8
-      FunctionName:
-        Ref: lambdaFunctionName
-      MemorySize: 1024
-      Policies: AmazonDynamoDBFullAccess
-      Environment:
-        Variables:
-          REGION: us-east-2
-          DYNAMODB_NAME: DBConnectionInfo
-  lambdaLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName:
-        Fn::Join:
-        - ''
-        - - /aws/lambda/
-          - Ref: lambdaFunctionName
-      RetentionInDays: 90
-Outputs:
-  apiGatewayInvokeURL:
-    Value:
-      Fn::Sub: https://${apiGateway}.execute-api.${AWS::Region}.amazonaws.com/${apiGatewayStageName}
+      Parameters:
+        TemplateURL: https://rashmi-ohio-sam-demo.s3.us-east-2.amazonaws.com/CFTemplates/lambda.yaml
+        CodeUri:
+          Bucket: Fn:Join [ ' ', [!Ref S3BucketName] ]
+          Key: Fn::Join [ ' ', [!Ref S3KeyName] ]

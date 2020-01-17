@@ -1,0 +1,177 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: 'AWS::Serverless-2016-10-31'
+Description: "My API Gateway and Lambda function"
+
+Parameters:
+  apiGatewayStageName:
+    Type: "String"
+    AllowedPattern: "^[a-z0-9]+$"
+    Default: "dev"
+
+  HandlerName:
+    Type: "String"
+    Default: "com.xoriant.meghflow.dbconnmgmt.lambda.DBConnMgmtLambda::handleRequest"
+
+  S3BucketName:
+    Type: "String"
+    Default: ""
+
+  S3KeyName:
+    Type: "String"
+    Default: "MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction.zip"
+
+  AccountName:
+    Description: Please Enter valid Account Name.
+    Type: String
+    Default: citi
+
+  Region:
+    Description: Enter Region
+    Type: String
+    Default: us-east-2
+
+  PrimePartitionKey:
+    Description: HashType PrimaryKey Name
+    Type: String
+    AllowedPattern: '[a-zA-Z0-9]*'
+    MinLength: '1'
+    MaxLength: '2048'
+    ConstraintDescription: must contain only alphanumberic characters
+
+  PrimePartitionKeyType:
+    Description: HashType PrimaryKey Type
+    Type: String
+    Default: S
+    AllowedPattern: '[S|N]'
+    MinLength: '1'
+    MaxLength: '1'
+    ConstraintDescription: must be either S or N
+
+  ReadCapacityUnits:
+    Description: Provisioned read throughput
+    Type: Number
+    Default: '5'
+    MinValue: '5'
+    MaxValue: '10000'
+    ConstraintDescription: must be between 5 and 10000
+
+  WriteCapacityUnits:
+    Description: Provisioned write throughput
+    Type: Number
+    Default: '5'
+    MinValue: '5'
+    MaxValue: '10000'
+    ConstraintDescription: must be between 5 and 10000
+
+Resources:
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: !Sub ${AccountName}-${Region}-artifacts-meghflow
+      AccessControl: PublicReadWrite
+      VersioningConfiguration:
+        Status: Suspended
+  
+  MeghFlowDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: !Ref 'PrimePartitionKey'
+        AttributeType: !Ref 'PrimePartitionKeyType'
+      KeySchema:
+      - AttributeName: !Ref 'PrimePartitionKey'
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: !Ref 'ReadCapacityUnits'
+        WriteCapacityUnits: !Ref 'WriteCapacityUnits'
+
+  apiGateway:
+    Type: "AWS::ApiGateway::RestApi"
+    Properties:
+      Name:
+       !Join 
+        - ''
+        - - 'api-gateway'
+          - !Ref MeghFlowLambda
+      # Name: !Sub 'api-gateway-${AWS::Serverless::Function}'
+      # Description: "DBTableScheduling-apigateway by CF"
+
+  dbconn:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      RestApiId: !Ref apiGateway
+      ParentId: !GetAtt 
+        - apiGateway
+        - RootResourceId
+      PathPart: dbconn
+      # endpointConfigurationTypes: REGIONAL
+
+
+  apiGatewayRootMethod:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      AuthorizationType: "NONE"
+      HttpMethod: "POST"
+      Integration:
+        IntegrationHttpMethod: "POST"
+        Type: AWS
+        Credentials: "arn:aws:iam::400410987437:role/ApiGatewayInvokeLambdaRole"
+        Uri: !Sub
+          - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations"
+          - lambdaArn:  !GetAtt "MeghFlowLambda.Arn"
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        # ResponseTemplates:
+        #   text/html: "$input.path('$')"
+      ResourceId: !Ref "dbconn" 
+      RestApiId: !Ref "apiGateway"
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Content-Type: true
+
+  apiGatewayDeployment:
+    Type: "AWS::ApiGateway::Deployment"
+    DependsOn:
+      - "apiGatewayRootMethod"
+    Properties:
+      RestApiId: !Ref "apiGateway"
+      StageName: !Ref "apiGatewayStageName"
+
+  MeghFlowLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: 
+        Bucket: !Ref S3BucketName
+        Key: !Ref S3KeyName
+      Handler: !Ref HandlerName
+      Runtime: java8
+      MemorySize: 1024
+      Policies: AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          REGION: us-east-2
+          DYNAMODB_NAME: DBConnectionInfo
+         
+
+  lambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      # LogGroupName: !Sub "/aws/lambda/${MeghFlowLambda}"
+      LogGroupName: !Join 
+        - ''
+        - - /aws/lambda/
+          - !Ref MeghFlowLambda
+      RetentionInDays: 90
+
+ 
+
+Outputs:
+  apiGatewayInvokeURL:
+    Value: !Sub "https://${apiGateway}.execute-api.${AWS::Region}.amazonaws.com/${apiGatewayStageName}"
+
+  lambdaname:
+    Value: !Ref 'MeghFlowLambda'

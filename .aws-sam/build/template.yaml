@@ -10,10 +10,6 @@ Parameters:
     Type: String
     AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
     Default: MeghFlow-function
-  lambdaCodeUri:
-    Type: String
-    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
-    Default: DBConnMgmtFunction
 Resources:
   apiGateway:
     Type: AWS::ApiGateway::RestApi

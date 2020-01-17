@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: 'AWS::Serverless-2016-10-31'
+Description: "ParentStack with all child stack"
+
+Parameters:
+  AccountName:
+    Description: Please Enter valid Account Name.
+    Type: "CommaDelimitedList"
+    Default: "citi"
+
+  Region:
+    Description: Enter Region
+    Type: "CommaDelimitedList"
+    Default: "us-east-2"
+
+  # apiGatewayStageName:
+  #   Type: "CommaDelimitedList"
+  #   Default: "dev"
+
+  # HandlerName:
+  #   Type: "CommaDelimitedList"
+  #   Default: "com.xoriant.meghflow.dbconnmgmt.lambda.DBConnMgmtLambda::handleRequest"
+
+  S3BucketName:
+    Type: "CommaDelimitedList"
+    Default: ""
+
+  S3KeyName:
+    Type: "CommaDelimitedList"
+    Default: "MeghFlow-DBConnMgmt-Lambda-DBConnMgmtFunction.zip"
+    
+Resources:
+  LambdaStack1:
+    Type: "AWS::CloudFormation::Stack"
+    Properties:
+      Parameters:
+        TemplateURL: https://rashmi-ohio-sam-demo.s3.us-east-2.amazonaws.com/CFTemplates/lambda.yaml
+        # TemplateURL: "D:\Projects\Testing"
+        CodeUri:
+          Bucket: Fn:Join [ ' ', [!Ref S3BucketName] ]
+          Key: Fn::Join [ ' ', [!Ref S3KeyName] ]
+        #   Bucket: !Ref S3BucketName
+        #   Key: !Ref S3KeyName
+        # Handler: !Ref HandlerName
+        # StageName: !Ref apiGatewayStageName
+          # Bucket: !Join 
+          #   - ''
+          #   - !Ref S3BucketName
+          # Key: !Join 
+          #   - ''
+          #   - !Ref S3KeyName
+        # Handler: !Join 
+        #     - ''
+        #     - !Ref HandlerName
+        # StageName: !Join 
+        #     - ''
+        #     - !Ref apiGatewayStageName
+          
+        # Handler: Fn::Join [ '-', [!Ref HandlerName] ]
+        # StageName: Fn::Join [ '-', [!Ref apiGatewayStageName] ]
+        
